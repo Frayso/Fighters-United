@@ -3,7 +3,9 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Creep : Unit
-{
+{ /// <summary>
+/// Class 4 creeps
+/// </summary>
     public float SpawnTime;
 
     public bool AirUnit;
