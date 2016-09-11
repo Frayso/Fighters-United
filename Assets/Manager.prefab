@@ -23,7 +23,7 @@ GameObject:
   - 114: {fileID: 114000011603425584}
   m_Layer: 0
   m_Name: Manager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,6 +54,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnList: []
   Selected: 0
+  team: 0
+  StartCameraPosTeam1: {x: 0, y: 5, z: 1}
+  StartCameraPosTeam2: {x: 0, y: 5, z: 1}
 --- !u!114 &114000013523576594
 MonoBehaviour:
   m_ObjectHideFlags: 1

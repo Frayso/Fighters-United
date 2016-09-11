@@ -9,14 +9,19 @@ public class Manager : NetworkBehaviour
     public byte Selected;
 
     private bool Buildmood;
-    private bool gotAteam;
+    private bool hasTeam;
+    public bool team;
 
     private GameObject temp;
+
+    public Vector3 StartCameraPosTeam1;
+    public Vector3 StartCameraPosTeam2;
     // Use this for initialization
     void Start ()
     {
         Buildmood = false;
         SpawnList = GameObject.Find("NetworkManager").GetComponent<NetworkManager>().spawnPrefabs;
+        hasTeam = false;
     }
 	
 	// Update is called once per frame
@@ -26,7 +31,7 @@ public class Manager : NetworkBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {                
-                CmdSpawn(temp.transform.position, Selected);
+                spawn(temp.transform.position, Selected);
                 Destroy(temp);
                 Buildmood = false;
             }
@@ -52,6 +57,36 @@ public class Manager : NetworkBehaviour
     {
         if (hasAuthority)
         {
+            if (!hasTeam)
+            {
+                Rect b1 = new Rect(Screen.width / 2, Screen.height / 2, 150, 100);
+                Rect b2 = new Rect(Screen.width / 2, (Screen.height / 2) + 110, 150, 100);
+                if (GUI.Button(b1, "Join Team 1"))
+                {
+                    team = false;
+                    hasTeam = true;
+                    Camera.main.transform.position = StartCameraPosTeam1;
+                    //Camera.main.fieldOfView = 60f;
+                }
+                if (b1.Contains(new Vector2(Input.mousePosition.x, (Screen.height - Input.mousePosition.y))))
+                {
+                    GUI.Label(new Rect(Input.mousePosition.x + 25, (Screen.height - Input.mousePosition.y), 150, 50), "Klick to join Team 1!");
+                }
+
+                if (GUI.Button(b2, "Join Team 2"))
+                {
+                    team = true;
+                    hasTeam = true;
+                    Camera.main.transform.position = StartCameraPosTeam2;
+                    //Camera.main.fieldOfView = 60f;
+                }
+                if (b2.Contains(new Vector2(Input.mousePosition.x, (Screen.height - Input.mousePosition.y))))
+                {
+                    GUI.Label(new Rect(Input.mousePosition.x + 25, (Screen.height - Input.mousePosition.y), 150, 50), "why da fak r u reading dis???");
+                }
+            }
+
+
             if (!Buildmood)
             {
                 if (GUI.Button(new Rect(Screen.width - 160, Screen.height - 110, 150, 100), SpawnList[Selected].name))
@@ -69,6 +104,16 @@ public class Manager : NetworkBehaviour
 
     public void spawn(Vector3 SpawnPosition, byte SpawnIndex)
     {
+        //GameObject obj = SpawnList[SpawnIndex];        
+        //if (obj.GetComponent<Kaserne>())
+        //{
+        //    Kaserne kas = obj.GetComponent<Kaserne>();
+            
+        //    kas.Team = team;
+        //    kas.Spawner = this;
+        //    Debug.LogWarning("got it");
+        //}
+        //ClientScene.RegisterPrefab(obj, NetworkHash128.Parse("TEST"));
         CmdSpawn(SpawnPosition, SpawnIndex);
     }
 
@@ -77,11 +122,6 @@ public class Manager : NetworkBehaviour
     {
         GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
         NetworkServer.Spawn(temp);
-        if (temp.GetComponent<Kaserne>())
-        {
-            temp.GetComponent<Kaserne>().spawn = this;
-        }
-
     }
 
     public void spawn(Vector3 SpawnPosition, GameObject SpawnObject)
@@ -92,11 +132,7 @@ public class Manager : NetworkBehaviour
     [Command(channel = 0)]
     private void CmdSpawn2(Vector3 SpawnPosition, GameObject SpawnObject)
     {   //http://answers.unity3d.com/questions/45079/instantiated-objects-scripts-not-enabled-not-sure.html
-        temp = (GameObject)Instantiate(SpawnObject, new Vector3(SpawnPosition.x, SpawnObject.transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
-        if (temp.GetComponent<Kaserne>())
-        {
-            temp.GetComponent<Kaserne>().spawn = this;
-        }
+        temp = (GameObject)Instantiate(SpawnObject, new Vector3(SpawnPosition.x, SpawnObject.transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));        
         NetworkServer.Spawn(temp);
     }
 
@@ -110,5 +146,13 @@ public class Manager : NetworkBehaviour
     {
         GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
         NetworkServer.Spawn(temp);
+    }
+
+    public bool Team
+    {
+        get
+        {
+            return team;
+        }
     }
 }

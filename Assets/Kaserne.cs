@@ -9,11 +9,23 @@ public class Kaserne : Building
 
     private float PercentageSpawn;
 
-    private Manager Spawner;
+    public Manager Spawner;
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
+        //if (hasAuthority)
+        //{
+        //    GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
+        //    for (int i = 0; i < gm.Length; i++)
+        //    {
+        //        if (gm[i].GetComponent<Manager>().hasAuthority == true)
+        //        {
+        //            Spawner = gm[i].GetComponent<Manager>();
+        //        }
+        //    }
+        //    Team = Spawner.team;
+        //}
     }
 
     // Update is called once per frame
@@ -21,12 +33,32 @@ public class Kaserne : Building
     {
         base.Update();
 
-        PercentageSpawn += Time.deltaTime; 
-
-        if (PercentageSpawn >= SpawnableCreeps[Creep].GetComponent<Creep>().SpawnTime) // performance ??
+        if (Spawner == null)
         {
-            Spawner.spawn(SpawnableCreeps[Creep]);
-            PercentageSpawn = 0f;
+            if (hasAuthority)
+            {
+                GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
+                for (int i = 0; i < gm.Length; i++)
+                {
+                    if (gm[i].GetComponent<Manager>().hasAuthority == true)
+                    {
+                        Spawner = gm[i].GetComponent<Manager>();
+                    }
+                }
+                Team = Spawner.team;
+            }
+        }
+        else
+        {            
+            PercentageSpawn += Time.deltaTime;
+
+            if (PercentageSpawn >= SpawnableCreeps[Creep].GetComponent<Creep>().SpawnTime) // performance ??
+            {
+                GameObject t = SpawnableCreeps[Creep];
+                t.GetComponent<Creep>().Team = Team;
+                Spawner.spawn(SpawnableCreeps[Creep]);
+                PercentageSpawn = 0f;
+            }
         }
     }
 
