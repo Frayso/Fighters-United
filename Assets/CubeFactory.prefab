@@ -111,6 +111,7 @@ MonoBehaviour:
   - {fileID: 1000013362266404, guid: 73051cd10ecfe0f4e86114003f88cebf, type: 2}
   Creep: 0
   Stop: 0
+  Spawner: {fileID: 0}
 --- !u!114 &114000011888052770
 MonoBehaviour:
   m_ObjectHideFlags: 1
