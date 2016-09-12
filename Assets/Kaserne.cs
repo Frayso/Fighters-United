@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class Kaserne : Building
 {
@@ -8,6 +9,9 @@ public class Kaserne : Building
     public bool Stop;
 
     private float PercentageSpawn;
+
+    [SyncVar]
+    public string SpawnerName;
 
     public Manager Spawner;
     // Use this for initialization
@@ -38,26 +42,31 @@ public class Kaserne : Building
             if (hasAuthority)
             {
                 GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
-                for (int i = 0; i < gm.Length; i++)
-                {
-                    if (gm[i].GetComponent<Manager>().hasAuthority == true)
-                    {
-                        Spawner = gm[i].GetComponent<Manager>();
-                    }
-                }
+                SpawnerName = "Player" + gm.Length.ToString();
+                Spawner = GameObject.Find(SpawnerName).GetComponent<Manager>();
                 Team = Spawner.team;
+                return;
             }
+
+            //if (SpawnerName != "Player" && SpawnerName != "" && SpawnerName != null)
+            //{
+                Spawner = GameObject.Find(SpawnerName).GetComponent<Manager>();
+                Team = Spawner.team;
+            //}                      
         }
         else
-        {            
-            PercentageSpawn += Time.deltaTime;
-
-            if (PercentageSpawn >= SpawnableCreeps[Creep].GetComponent<Creep>().SpawnTime) // performance ??
+        {
+            if (hasAuthority)
             {
-                GameObject t = SpawnableCreeps[Creep];
-                t.GetComponent<Creep>().Team = Team;
-                Spawner.spawn(SpawnableCreeps[Creep]);
-                PercentageSpawn = 0f;
+                PercentageSpawn += Time.deltaTime;
+
+                if (PercentageSpawn >= SpawnableCreeps[Creep].GetComponent<Creep>().SpawnTime) // performance ??
+                {
+                    GameObject t = SpawnableCreeps[Creep];
+                    t.GetComponent<Creep>().Team = Team;
+                    Spawner.spawn(SpawnableCreeps[Creep]);
+                    PercentageSpawn = 0f;
+                }
             }
         }
     }
