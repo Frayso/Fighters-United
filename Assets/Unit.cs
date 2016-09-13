@@ -7,6 +7,7 @@ public class Unit : NetworkBehaviour
     public int Life;
     public int Def;
 
+    [SyncVar]
     public bool Team;    
 
     // Use this for initialization

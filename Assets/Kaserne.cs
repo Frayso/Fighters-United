@@ -25,7 +25,7 @@ public class Kaserne : Building
         //    {
         //        if (gm[i].GetComponent<Manager>().hasAuthority == true)
         //        {
-        //            Spawner = gm[i].GetComponent<Manager>();
+        //            Spawner = gm[i].GetComponent<Manager>();                    
         //        }
         //    }
         //    Team = Spawner.team;
@@ -36,39 +36,57 @@ public class Kaserne : Building
     protected override void Update()
     {
         base.Update();
+        if (!hasAuthority)
+        {
+            return;
+        }
 
         if (Spawner == null)
         {
-            if (hasAuthority)
+            GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
+            for (int i = 0; i < gm.Length; i++)
             {
-                GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
-                SpawnerName = "Player" + gm.Length.ToString();
-                Spawner = GameObject.Find(SpawnerName).GetComponent<Manager>();
-                Team = Spawner.team;
-                return;
+                if (gm[i].GetComponent<Manager>().hasAuthority == true)
+                {
+                    Spawner = gm[i].GetComponent<Manager>();
+                }
             }
-
-            //if (SpawnerName != "Player" && SpawnerName != "" && SpawnerName != null)
-            //{
-                Spawner = GameObject.Find(SpawnerName).GetComponent<Manager>();
-                Team = Spawner.team;
-            //}                      
+            Team = Spawner.team;
         }
-        else
-        {
-            if (hasAuthority)
-            {
+        //if (Spawner == null)
+        //{
+        //    //if (hasAuthority)
+        //    //{
+        //    //    GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
+        //    //    SpawnerName = "Player" + gm.Length.ToString();
+        //    //    Spawner = GameObject.Find(SpawnerName).GetComponent<Manager>();
+        //    //    Team = Spawner.team;
+        //    //    return;
+        //    //}
+
+        //    ////if (SpawnerName != "Player" && SpawnerName != "" && SpawnerName != null)
+        //    ////{
+        //    //    Spawner = GameObject.Find(SpawnerName).GetComponent<Manager>();
+        //    //    Team = Spawner.team;
+        //    ////}                      
+        //}
+        //else
+        //{
+        //    if (hasAuthority)
+        //    {
+        Debug.LogWarning("do da update");
                 PercentageSpawn += Time.deltaTime;
 
                 if (PercentageSpawn >= SpawnableCreeps[Creep].GetComponent<Creep>().SpawnTime) // performance ??
                 {
-                    GameObject t = SpawnableCreeps[Creep];
+            Debug.LogWarning("Spawn");
+            GameObject t = SpawnableCreeps[Creep];
                     t.GetComponent<Creep>().Team = Team;
-                    Spawner.spawn(SpawnableCreeps[Creep]);
+                    Spawner.CmdSpawn3(SpawnableCreeps[Creep]);
                     PercentageSpawn = 0f;
                 }
-            }
-        }
+        //    }
+        //}
     }
 
     public Manager spawn
