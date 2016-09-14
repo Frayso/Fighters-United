@@ -129,9 +129,10 @@ public class Manager : NetworkBehaviour
     [Command(channel = 0)]
     private void CmdSpawn(Vector3 SpawnPosition, byte SpawnIndex)
     {
-        GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
+        GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.identity);
         //NetworkServer.Spawn(temp);
         NetworkServer.SpawnWithClientAuthority(temp, gameObject);
+        
     }
 
     public void spawn(Vector3 SpawnPosition, GameObject SpawnObject)
@@ -142,7 +143,7 @@ public class Manager : NetworkBehaviour
     [Command(channel = 0)]
     private void CmdSpawn2(Vector3 SpawnPosition, GameObject SpawnObject)
     {   //http://answers.unity3d.com/questions/45079/instantiated-objects-scripts-not-enabled-not-sure.html
-        temp = (GameObject)Instantiate(SpawnObject, new Vector3(SpawnPosition.x, SpawnObject.transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));        
+        temp = (GameObject)Instantiate(SpawnObject, new Vector3(SpawnPosition.x, SpawnObject.transform.position.y, SpawnPosition.z), Quaternion.identity);        
         //NetworkServer.Spawn(temp);
         NetworkServer.SpawnWithClientAuthority(temp, gameObject);
     }
@@ -155,7 +156,7 @@ public class Manager : NetworkBehaviour
     [Command(channel = 0)]
     public void CmdSpawn3(GameObject Spawnobject)  //bugy
     {
-        GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
+        GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.identity);
         //NetworkServer.Spawn(temp);
         NetworkServer.SpawnWithClientAuthority(temp, gameObject);
     }

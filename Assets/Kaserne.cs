@@ -13,7 +13,7 @@ public class Kaserne : Building
     [SyncVar]
     public string SpawnerName;
 
-    public Manager Spawner;
+    public GameObject Spawner;
     // Use this for initialization
     protected override void Start()
     {
@@ -48,10 +48,10 @@ public class Kaserne : Building
             {
                 if (gm[i].GetComponent<Manager>().hasAuthority == true)
                 {
-                    Spawner = gm[i].GetComponent<Manager>();
+                    Spawner = gm[i];
                 }
             }
-            Team = Spawner.team;
+            Team = Spawner.GetComponent<Manager>().team;
         }
         //if (Spawner == null)
         //{
@@ -82,14 +82,23 @@ public class Kaserne : Building
             Debug.LogWarning("Spawn");
             GameObject t = SpawnableCreeps[Creep];
                     t.GetComponent<Creep>().Team = Team;
-                    Spawner.CmdSpawn3(SpawnableCreeps[Creep]);
+            
+            CmdSpawn(t, Spawner);
                     PercentageSpawn = 0f;
                 }
         //    }
         //}
     }
 
-    public Manager spawn
+    [Command(channel = 0)]
+    public void CmdSpawn(GameObject Spawnobject, GameObject spawner)  //bugy
+    {
+        GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.identity);
+        //NetworkServer.Spawn(temp);
+        NetworkServer.SpawnWithClientAuthority(temp, base.connectionToClient);
+    }
+
+    public GameObject spawn
     {
         set
         {
