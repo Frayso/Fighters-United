@@ -119,9 +119,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b38eb4c8b6163a46b11811da3f6e183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLife: 25
   Life: 25
   Def: 0
-  Team: 0
+  Team: 1
   SpawnTime: 5
   AirUnit: 0
   Dmg: 5

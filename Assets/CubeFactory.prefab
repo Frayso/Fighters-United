@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9cc1ad0dcf389409df093576df32d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLife: 100
   Life: 100
   Def: 5
   Team: 0
@@ -111,7 +112,6 @@ MonoBehaviour:
   - {fileID: 1000013362266404, guid: 73051cd10ecfe0f4e86114003f88cebf, type: 2}
   Creep: 0
   Stop: 0
-  SpawnerName: 
   Spawner: {fileID: 0}
 --- !u!114 &114000011888052770
 MonoBehaviour:

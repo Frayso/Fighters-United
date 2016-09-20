@@ -112,17 +112,7 @@ public class Manager : NetworkBehaviour
     }
 
     public void spawn(Vector3 SpawnPosition, byte SpawnIndex)
-    {
-        //GameObject obj = SpawnList[SpawnIndex];        
-        //if (obj.GetComponent<Kaserne>())
-        //{
-        //    Kaserne kas = obj.GetComponent<Kaserne>();
-            
-        //    kas.Team = team;
-        //    kas.Spawner = this;
-        //    Debug.LogWarning("got it");
-        //}
-        //ClientScene.RegisterPrefab(obj, NetworkHash128.Parse("TEST"));
+    {       
         CmdSpawn(SpawnPosition, SpawnIndex);        
     }
 
@@ -130,10 +120,12 @@ public class Manager : NetworkBehaviour
     private void CmdSpawn(Vector3 SpawnPosition, byte SpawnIndex)
     {
         GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.identity);
-        //NetworkServer.Spawn(temp);
-        NetworkServer.SpawnWithClientAuthority(temp, gameObject);
-        
-    }
+
+        if (!NetworkServer.SpawnWithClientAuthority(temp, gameObject))
+        {
+            NetworkServer.Spawn(temp);
+        }        
+    }   
 
     public void spawn(Vector3 SpawnPosition, GameObject SpawnObject)
     {
