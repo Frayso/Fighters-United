@@ -58,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 031d3a12c81ef2247a6a3988015f8579, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b38eb4c8b6163a46b11811da3f6e183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLife: 25
   Life: 25
   Def: 0
   Team: 1
@@ -160,4 +161,4 @@ MonoBehaviour:
     i14: 206
     i15: 191
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1

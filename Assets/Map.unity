@@ -195,6 +195,11 @@ MonoBehaviour:
   minX: -1
   MaxZ: 98.5
   minZ: -1
+--- !u!1 &783257464 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000011896623944, guid: 04b83342d7db9d04a81a7a7b2a5ffe71,
+    type: 2}
+  m_PrefabInternal: {fileID: 1759134281}
 --- !u!4 &982277959 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011204348246, guid: 04b83342d7db9d04a81a7a7b2a5ffe71,
@@ -231,7 +236,7 @@ MonoBehaviour:
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
-  m_NetworkAddress: 192.168.178.32
+  m_NetworkAddress: 192.168.178.30
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 0
@@ -300,7 +305,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!114 &1030803300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +364,16 @@ Prefab:
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011476471946, guid: 04b83342d7db9d04a81a7a7b2a5ffe71,
+        type: 2}
+      propertyPath: NextWaypointTeam1
+      value: 
+      objectReference: {fileID: 783257464}
+    - target: {fileID: 114000011476471946, guid: 04b83342d7db9d04a81a7a7b2a5ffe71,
+        type: 2}
+      propertyPath: NextWaypointTeam2
+      value: 
+      objectReference: {fileID: 783257464}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 04b83342d7db9d04a81a7a7b2a5ffe71, type: 2}
   m_IsPrefabParent: 0
@@ -533,7 +548,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011204348246, guid: 04b83342d7db9d04a81a7a7b2a5ffe71, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114000011476471946, guid: 04b83342d7db9d04a81a7a7b2a5ffe71,
         type: 2}

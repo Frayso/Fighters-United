@@ -4,9 +4,14 @@ using UnityEngine.Networking;
 
 public class Unit : NetworkBehaviour
 {
+    public int maxLife;
+
+    [SyncVar]
     public int Life;
+
     public int Def;
 
+    [SyncVar]
     public bool Team;    
 
     // Use this for initialization

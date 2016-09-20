@@ -24,6 +24,19 @@ public class Creep : Unit
     protected override void Start ()
     {
         base.Start();
+        if (hasAuthority)
+        {
+            GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
+
+            for (int i = 0; i < gm.Length; i++)
+            {
+                if (gm[i].GetComponent<Manager>().hasAuthority == true)
+                {
+                    Team = gm[i].GetComponent<Manager>().team;
+                    Debug.LogWarning(Team);
+                }
+            }
+        }        
     }
 	
 	// Update is called once per frame

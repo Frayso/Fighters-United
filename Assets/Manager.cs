@@ -16,12 +16,20 @@ public class Manager : NetworkBehaviour
 
     public Vector3 StartCameraPosTeam1;
     public Vector3 StartCameraPosTeam2;
+
+    private NetworkConnection conn;
     // Use this for initialization
     void Start ()
     {
         Buildmood = false;
         SpawnList = GameObject.Find("NetworkManager").GetComponent<NetworkManager>().spawnPrefabs;
         hasTeam = false;
+
+        if (hasAuthority)
+        {
+            GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
+            gameObject.name = "Player" + gm.Length.ToString();
+        }
     }
 	
 	// Update is called once per frame
@@ -39,7 +47,8 @@ public class Manager : NetworkBehaviour
             {
                 Destroy(temp);
                 Buildmood = false;
-            }
+            }            
+            
         }
         if (Buildmood)
         {
@@ -103,26 +112,20 @@ public class Manager : NetworkBehaviour
     }
 
     public void spawn(Vector3 SpawnPosition, byte SpawnIndex)
-    {
-        //GameObject obj = SpawnList[SpawnIndex];        
-        //if (obj.GetComponent<Kaserne>())
-        //{
-        //    Kaserne kas = obj.GetComponent<Kaserne>();
-            
-        //    kas.Team = team;
-        //    kas.Spawner = this;
-        //    Debug.LogWarning("got it");
-        //}
-        //ClientScene.RegisterPrefab(obj, NetworkHash128.Parse("TEST"));
-        CmdSpawn(SpawnPosition, SpawnIndex);
+    {       
+        CmdSpawn(SpawnPosition, SpawnIndex);        
     }
 
     [Command(channel = 0)]
     private void CmdSpawn(Vector3 SpawnPosition, byte SpawnIndex)
     {
-        GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
-        NetworkServer.Spawn(temp);
-    }
+        GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.identity);
+
+        if (!NetworkServer.SpawnWithClientAuthority(temp, gameObject))
+        {
+            NetworkServer.Spawn(temp);
+        }        
+    }   
 
     public void spawn(Vector3 SpawnPosition, GameObject SpawnObject)
     {
@@ -132,8 +135,9 @@ public class Manager : NetworkBehaviour
     [Command(channel = 0)]
     private void CmdSpawn2(Vector3 SpawnPosition, GameObject SpawnObject)
     {   //http://answers.unity3d.com/questions/45079/instantiated-objects-scripts-not-enabled-not-sure.html
-        temp = (GameObject)Instantiate(SpawnObject, new Vector3(SpawnPosition.x, SpawnObject.transform.position.y, SpawnPosition.z), Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));        
-        NetworkServer.Spawn(temp);
+        temp = (GameObject)Instantiate(SpawnObject, new Vector3(SpawnPosition.x, SpawnObject.transform.position.y, SpawnPosition.z), Quaternion.identity);        
+        //NetworkServer.Spawn(temp);
+        NetworkServer.SpawnWithClientAuthority(temp, gameObject);
     }
 
     public void spawn(GameObject Spawnobject)
@@ -142,10 +146,11 @@ public class Manager : NetworkBehaviour
     }
 
     [Command(channel = 0)]
-    private void CmdSpawn3(GameObject Spawnobject)  //bugy
+    public void CmdSpawn3(GameObject Spawnobject)  //bugy
     {
-        GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.AngleAxis(0f, new Vector3(0f, 0f, 0f)));
-        NetworkServer.Spawn(temp);
+        GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.identity);
+        //NetworkServer.Spawn(temp);
+        NetworkServer.SpawnWithClientAuthority(temp, gameObject);
     }
 
     public bool Team

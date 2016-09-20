@@ -52,7 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e53d1934580c547a41dc5d0033daa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnList: []
+  SpawnList:
+  - {fileID: 1000012370523300, guid: bef2f2cea0b891548abf784b30974689, type: 2}
+  - {fileID: 1000013362266404, guid: 73051cd10ecfe0f4e86114003f88cebf, type: 2}
   Selected: 0
   team: 0
   StartCameraPosTeam1: {x: 0, y: 5, z: 1}
