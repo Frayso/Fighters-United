@@ -24,7 +24,9 @@ GameObject:
   - 23: {fileID: 23000013157277222}
   - 114: {fileID: 114000013458965978}
   - 54: {fileID: 54000013714715174}
-  - 114: {fileID: 114000011706835702}
+  - 135: {fileID: 135000014055457474}
+  - 114: {fileID: 114000010404650504}
+  - 114: {fileID: 114000010439409000}
   m_Layer: 2
   m_Name: CubeFighter
   m_TagString: Untagged
@@ -39,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013362266404}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.175, z: 1}
+  m_LocalPosition: {x: 0, y: 0.175, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -108,7 +110,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114000011706835702
+--- !u!114 &114000010404650504
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -120,16 +122,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLife: 25
-  Life: 25
-  Def: 0
-  Team: 1
-  SpawnTime: 5
+  Life: 0
+  Def: 1
+  Team: 0
+  SpawnTime: 10
   AirUnit: 0
   Dmg: 5
   AttackSpeed: 1
-  MovementSpeed: 1
-  NoticeRange: 5
+  MovementSpeed: 0.5
+  NoticeRange: 2
   AttackRange: 1
+  Target: {fileID: 0}
+--- !u!114 &114000010439409000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013362266404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.04761905
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 2
+  m_SyncSpin: 1
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114000013458965978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,3 +185,15 @@ MonoBehaviour:
     i15: 191
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!135 &135000014055457474
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013362266404}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

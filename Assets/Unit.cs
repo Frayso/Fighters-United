@@ -11,8 +11,8 @@ public class Unit : NetworkBehaviour
 
     public int Def;
 
-    [SyncVar]
-    public bool Team;    
+    //[SyncVar]
+    public bool Team;  
 
     // Use this for initialization
     protected virtual void Start ()
@@ -21,6 +21,7 @@ public class Unit : NetworkBehaviour
         {
             Life = 1;
         }
+        Life = maxLife;        
 	}
 	
 	// Update is called once per frame
@@ -29,6 +30,6 @@ public class Unit : NetworkBehaviour
         if (Life <= 0)
         {
             Destroy(this.gameObject);
-        }
-	}
+        }        
+	}    
 }

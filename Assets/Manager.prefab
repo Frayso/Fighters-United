@@ -58,7 +58,7 @@ MonoBehaviour:
   Selected: 0
   team: 0
   StartCameraPosTeam1: {x: 0, y: 5, z: 1}
-  StartCameraPosTeam2: {x: 0, y: 5, z: 1}
+  StartCameraPosTeam2: {x: 0, y: 5, z: 15}
 --- !u!114 &114000013523576594
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -17,7 +17,6 @@ public class Manager : NetworkBehaviour
     public Vector3 StartCameraPosTeam1;
     public Vector3 StartCameraPosTeam2;
 
-    private NetworkConnection conn;
     // Use this for initialization
     void Start ()
     {
@@ -73,6 +72,7 @@ public class Manager : NetworkBehaviour
                 if (GUI.Button(b1, "Join Team 1"))
                 {
                     team = false;
+                    CmdNewTeam(this.team);
                     hasTeam = true;
                     Camera.main.transform.position = StartCameraPosTeam1;
                     //Camera.main.fieldOfView = 60f;
@@ -85,6 +85,7 @@ public class Manager : NetworkBehaviour
                 if (GUI.Button(b2, "Join Team 2"))
                 {
                     team = true;
+                    CmdNewTeam(this.team);
                     hasTeam = true;
                     Camera.main.transform.position = StartCameraPosTeam2;
                     //Camera.main.fieldOfView = 60f;
@@ -121,10 +122,13 @@ public class Manager : NetworkBehaviour
     {
         GameObject temp = (GameObject)Instantiate(SpawnList[SpawnIndex], new Vector3(SpawnPosition.x, SpawnList[SpawnIndex].transform.position.y, SpawnPosition.z), Quaternion.identity);
 
-        if (!NetworkServer.SpawnWithClientAuthority(temp, gameObject))
+        NetworkServer.SpawnWithClientAuthority(temp, gameObject);
+
+        temp.GetComponent<Unit>().Team = team;
+        if (temp.GetComponent<Kaserne>() != null)
         {
-            NetworkServer.Spawn(temp);
-        }        
+            temp.GetComponent<Kaserne>().Spawner = this.gameObject;
+        }
     }   
 
     public void spawn(Vector3 SpawnPosition, GameObject SpawnObject)
@@ -151,6 +155,12 @@ public class Manager : NetworkBehaviour
         GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.identity);
         //NetworkServer.Spawn(temp);
         NetworkServer.SpawnWithClientAuthority(temp, gameObject);
+    }
+
+    [Command(channel = 0)]
+    public void CmdNewTeam(bool newTeam)
+    {
+        this.team = newTeam;
     }
 
     public bool Team
