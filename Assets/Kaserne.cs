@@ -7,6 +7,7 @@ public class Kaserne : Building
     public GameObject[] SpawnableCreeps;
     public int Creep;
     public bool Stop;
+    public Vector3 Spawnoffset;
 
     private float PercentageSpawn;
 
@@ -35,22 +36,10 @@ public class Kaserne : Building
     {
         base.Update();
 
-        if (!hasAuthority)
+        if (!isServer)
         {
             return;
-        }
-        if (Spawner == null)
-        {
-            GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
-            for (int i = 0; i < gm.Length; i++)
-            {
-                if (gm[i].GetComponent<Manager>().hasAuthority == true)
-                {
-                    Spawner = gm[i];
-                }
-            }
-            Team = Spawner.GetComponent<Manager>().team;
-        }
+        }        
 
 
         if (!Stop)
@@ -62,19 +51,11 @@ public class Kaserne : Building
                 GameObject t = SpawnableCreeps[Creep];
                 t.GetComponent<Creep>().Team = Team;
 
-                Spawner.GetComponent<Manager>().spawn(t.transform.position, 1);
+                Spawner.GetComponent<Manager>().spawn(transform.position + t.transform.position + Spawnoffset, 1); // 1 to spawnindex
                 PercentageSpawn = 0f;
             }
         }        
-    }
-
-    [Command(channel = 0)]
-    public void CmdSpawn(GameObject Spawnobject, GameObject spawner)  //bugy
-    {
-        GameObject temp = (GameObject)Instantiate(Spawnobject, Spawnobject.transform.position, Quaternion.identity);
-        NetworkServer.Spawn(temp);
-        //NetworkServer.SpawnWithClientAuthority(temp, base.connectionToClient);
-    }
+    }    
 
     public GameObject spawn
     {

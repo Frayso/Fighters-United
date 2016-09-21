@@ -20,15 +20,17 @@ public class Waypoint : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.LogWarning("yay");
-        var tmp = col.gameObject.GetComponent<Creep>();
-        if (tmp.Team)     // optimize
+        if (!col.isTrigger)
         {
-            tmp.NextWaypoint = NextWaypointTeam2.transform.position;
-        }
-        else
-        {
-            tmp.NextWaypoint = NextWaypointTeam1.transform.position;
+            var tmp = col.gameObject.GetComponent<Creep>();
+            if (tmp.Team)     // optimize
+            {
+                tmp.NextWaypoint = NextWaypointTeam2.transform.position;
+            }
+            else
+            {
+                tmp.NextWaypoint = NextWaypointTeam1.transform.position;
+            }
         }
     }
 }
