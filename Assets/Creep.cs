@@ -41,50 +41,34 @@ public class Creep : Unit
 	protected override void Update ()
     {
         base.Update();
-        //if (isServer)
-        //{
-            if (Target != null)
-            {
-                if (Target.GetComponent<Unit>().Team == Team)
-                {
-                    Target = null;
-                }
-            }
 
-            if (lookAtEnemie)
+        if (Target != null)
+        {
+            if (attack == false)
             {
-                transform.LookAt(Target.transform);
+                attackCooldown = 0f;          // should it
 
-            if (attack)
-            {
-                if (isServer)
-                {
-                    if (attackCooldown <= 0f)
-                    {
-                        Target.GetComponent<Unit>().Life = Target.GetComponent<Unit>().Life - Dmg;
-                        attackCooldown = AttackSpeed;
-                    }
-                    attackCooldown = attackCooldown - Time.deltaTime;
-                    attack = false;
-                    return;
-                }
-            }
-            else
-            {
-                //attackCooldown = 0;
+                transform.LookAt(Target.transform.position);
                 transform.position += transform.forward * MovementSpeed * Time.deltaTime;
             }
-            }
             else
             {
-                transform.LookAt(nextWaypoint);
-                range.radius = NoticeRange / transform.localScale.x;
+                attackCooldown = attackCooldown - Time.deltaTime;
+                if (attackCooldown <= 0f)
+                {
+                    DamageCalculation.DoDamage(gameObject, Target);
+                    attackCooldown = AttackSpeed;
+                }
             }
+        }
+        else
+        {
+            attackCooldown = 0f;
+            range.radius = NoticeRange / transform.localScale.x;
 
+            transform.LookAt(nextWaypoint);
             transform.position += transform.forward * MovementSpeed * Time.deltaTime;
-
-            attack = false;
-        //}
+        }
     }
 
     public Vector3 NextWaypoint
@@ -95,43 +79,54 @@ public class Creep : Unit
         }
     }
 
-    void OnTriggerStay(Collider col)
-    {        // if server
-        if (!col.isTrigger)
+    void OnTriggerEnter(Collider col)
+    {
+        if (!col.isTrigger && col.gameObject.GetComponent<Unit>() != null)
         {
-            if (Target == null && col.gameObject.GetComponent<Unit>() != null)
+            if (col.gameObject.GetComponent<Unit>().Team != Team)
             {
-                if (col.gameObject.GetComponent<Unit>().Team != Team)
+                if (Target == null)
                 {
                     Target = col.gameObject;
                     range.radius = AttackRange / transform.localScale.x;
                 }
-            }
-            else
-            {
-                if (col.gameObject.GetComponent<Unit>() != null)
+                else
                 {
-                    if (col.gameObject.GetComponent<Unit>().Team != Team)
-                    {
-                        attack = true;
-                    }
+                    attack = true;
                 }
-            }            
+            }
         }
     }
 
-    private bool lookAtEnemie
+    void OnTriggerExit(Collider col)
     {
-        get
+        if (!col.isTrigger && col.gameObject.GetComponent<Unit>() != null)
         {
-            if (Target != null)
+            if (col.gameObject.GetComponent<Unit>() != Team)
             {
-                return true;
+                if (Target != null)
+                {
+                    attack = false;
+                }
+                else
+                {
+                    range.radius = NoticeRange / transform.localScale.x;
+                }
             }
-            else
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {        // ist nötig ?      savety first ??
+        if (!col.isTrigger && col.gameObject.GetComponent<Unit>() != null)
+        {
+            if (col.gameObject.GetComponent<Unit>() != Team)
             {
-                return false;
-            }
+                if (Target != null)
+                {
+                    attack = true;
+                }
+            } 
         }
     }
 }

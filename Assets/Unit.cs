@@ -11,7 +11,7 @@ public class Unit : NetworkBehaviour
 
     public int Def;
 
-    //[SyncVar]
+    [SyncVar]
     public bool Team;  
 
     // Use this for initialization
